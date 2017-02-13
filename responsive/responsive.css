@@ -1,0 +1,55 @@
+
+
+@media all and (min-width: 1400px) {
+	div.ralphy{
+
+		{width:250px; height:187px;
+		background:url(ralphy.gif) 0 0px;}
+
+	}
+}
+
+@media all and (max-width: 1400px) and (min-width: 1200px) {
+	div.ralphy{
+
+		{width:250px; height:187px;
+		background:url(ralphy.gif) -250 0px;}
+
+	}
+}
+
+@media all and (max-width: 1200px) and (min-width: 1000px) {
+	div.ralphy{
+
+		{width:250px; height:187px;
+		background:url(ralphy.gif) 0 -187px;}
+
+	}
+}
+
+@media all and (max-width: 1000px) and (min-width: 800px) {
+	div.ralphy{
+
+		{width:250px; height:187px;
+		background:url(ralphy.gif) -250 -187px;}
+
+	}
+}
+
+@media all and (max-width: 800px) and (min-width: 600px) {
+	div.ralphy{
+
+		{width:250px; height:187px;
+		background:url(ralphy.gif) 0 -374px;}
+
+	}
+}
+
+@media all and (max-width: 600px) {
+	div.ralphy{
+
+		{width:250px; height:187px;
+		background:url(ralphy.gif) -250 -374px;}
+
+	}
+}
