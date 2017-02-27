@@ -16,10 +16,14 @@
 <script>
 	var vid = document.getElementById("failvideo");
 	vid.addEventListener("timeupdate",function() {
-		if vid.currentTime == 5 {
+		var lyr = document.getElementById("lyrics");
+		if (vid.currentTime > 2) {
 			vid.pause();
+			lyr.innerHTML = "Howdy, pawtna";
 		}
-	});
+	},false);
+
+
 </script>
 </body>
 </html>
