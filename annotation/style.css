@@ -1,0 +1,67 @@
+
+
+	body {
+    	background-color: lightgreen;
+		}
+
+	h1{
+		text-align: center;
+		color: darkgreen;
+
+	}
+	h2{
+		text-align: center;
+		color: darkgreen;
+
+	}
+	h3{
+		text-align: center;
+		color: darkgreen;
+
+	}
+	h4{
+		text-align: center;
+		color: darkgreen;
+
+	}
+
+	video {
+		align-content:center;
+		display: block;
+    	margin: auto;
+		border-color: black;
+		border-width: medium;
+    	width: 60%;
+
+	}
+
+	p{
+		margin-left: 10%;
+		margin-right: 10%;
+		padding: 15px;
+		font-size: 22px;
+		font-weight: bold;
+
+	}
+	p.italic {
+    font-style: italic;
+	}
+
+	ul{
+		margin-left: 10%;
+		margin-right: 10%;
+		padding: 10px;
+		font-size: 22px;
+		font-weight: bold;
+		line-height: 110%;
+	}
+	ul li{
+  		margin-bottom: 5px;
+	}
+	.signoff {
+		font-style: oblique;
+		font-family: serif;
+	}
+	.title {
+		font-style:italic;
+	}
