@@ -17,10 +17,37 @@
 	var vid = document.getElementById("failvideo");
 	vid.addEventListener("timeupdate",function() {
 		var lyr = document.getElementById("lyrics");
-		if (vid.currentTime > 2) {
-			vid.pause();
-			lyr.innerHTML = "Howdy, pawtna";
+		if ((vid.currentTime > 0) && (vid.currentTime < 1)) {
+			lyr.innerHTML = "Jamie,";
 		}
+		if ((vid.currentTime > 1) && (vid.currentTime < 2)) {
+			lyr.innerHTML = "Jamie, I";
+		}
+		if ((vid.currentTime > 2) && (vid.currentTime < 3)) {
+			lyr.innerHTML = "Jamie, I gotta say:";
+		}
+		if ((vid.currentTime > 3) && (vid.currentTime < 4)) {
+			lyr.innerHTML = "Don't fuck me over.";
+		}
+		if ((vid.currentTime > 4) && (vid.currentTime < 5)) {
+			lyr.innerHTML = "Don't.";
+		}
+		if ((vid.currentTime > 5) && (vid.currentTime < 6)) {
+			lyr.innerHTML = "Cuz if you fuck me over,";
+		}
+		if ((vid.currentTime > 6) && (vid.currentTime < 7)) {
+			lyr.innerHTML = "Cuz if you fuck me over, I'll be upset.";
+		}
+		if ((vid.currentTime > 7) && (vid.currentTime < 8)) {
+			lyr.innerHTML = "And that would be sad.";
+		}
+		if ((vid.currentTime > 8) && (vid.currentTime < 9)) {
+			lyr.innerHTML = "For real Jamie.";
+		}
+		if ((vid.currentTime > 9) && (vid.currentTime < 10)) {
+			lyr.innerHTML = "Let me into your heart.";
+		}
+
 	},false);
 
 

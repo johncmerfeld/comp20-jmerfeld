@@ -59,9 +59,9 @@
   		margin-bottom: 5px;
 	}
 
-	.lyrics{
-		align-content: center;
-		font-size: 22px;
+	#lyrics{
+		text-align: center;
+		font-size: 34px;
 		font-weight: bold;
 
 	}
