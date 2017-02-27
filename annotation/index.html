@@ -8,22 +8,18 @@
 
 <body>
 
-<h1 id="title">Fail
-	<button onclick="changeColor('blue');">blue</button>
-    <button onclick="changeColor('red');">red</button>
-</h1>
+<h1 id="title">Fail</h1>
 
 <video src="https://www.cs.tufts.edu/comp/20/fail.mp4" id="failvideo" controls></video>
 <div id="lyrics"></div>
 
 <script>
-
-function changeColor(newColor) {
-  var elem = document.getElementById('title');
-  elem.style.color = newColor;
-}
-
+	var vid = document.getElementById("failvideo");
+	vid.addEventListener("timeupdate",function() {
+		if vid.currentTime == 5 {
+			vid.pause();
+		}
+	});
 </script>
-<!-- <script src="annotate.js"></script> -->
 </body>
 </html>
