@@ -1,6 +1,6 @@
+var myUsername = "We1HUtFX"; // given by Ming
 var myLat = 0;
 var myLng = 0;
-var request = new XMLHttpRequest();
 var me = new google.maps.LatLng(myLat, myLng);
 var myOptions = {
 			zoom: 13, // The larger the zoom number, the bigger the zoom
@@ -39,45 +39,56 @@ function renderMap()
 	// Create a marker
 	var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 
-	marker = new google.maps.Marker({
+	myMarker = new google.maps.Marker({
 		position: me,
 		map: map,
-		title: "Here I Am!"
-		icon: iconBase+'JohnCMerfeldHeadshot-small.jpg'
+		title: myUsername
+		//TODO: icon: JohnCMerfeldHeadshotSmall.jpg
 	});
-	marker.setMap(map);
+	//myMarker.setMap(map);
 
-	// Open info window on click of marker
-	google.maps.event.addListener(marker, 'click', function() {
+	// instantiate helper variables
+	var jsonUser = "username=";
+	var params = jsonUser.concat(myUsername,"&lat=",myLat,"&lng=",myLng);
+	var url = "https://defense-in-derpth.herokuapp.com/submit";
+
+	// instantiate request
+	var xhr = new XMLHttpRequest();
+
+	// set up request
+	xhr.open("POST", url, true);
+
+	// header information
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+	// handler function
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			elements = JSON.parse(xhr.responseText);
+			for (var i=0;i<elements.vehicles.length;i++) {
+				data = elements.vehicles[i];
+				console.log(data.username);
+				console.log(data.lat);
+				console.log(data.lng);
+
+				latLng = new google.maps.LatLng(data.lat, data.lng);
+
+				marker = new google.maps.Marker({
+					position: latLng,
+					map: map,
+					title: data.username
+				});
+			}
+		}
+	};
+	xhr.send(params);
+
+	infowindow.setContent(myMarker.title);
+	infowindow.open(map, myMarker);
+
+	/* Open info window on click of marker
+	google.maps.event.addListener(myMarker, 'click', function() {
 		infowindow.setContent(marker.title);
 		infowindow.open(map, marker);
-	});
+	}); */
 }
-
-// instantiate helper variables
-var myUsername = "We1HUtFX"; // given by Ming
-var jsonUser = "username=";
-var params = jsonUser.concat(myUsername,"&lat=",myLat,"&lng=",myLng);
-var url = "https://defense-in-derpth.herokuapp.com/submit";
-
-// instantiate request
-var xhr = new XMLHttpRequest();
-
-// set up request
-xhr.open("POST", url, true);
-
-// header information
-xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-// handler function
-xhr.onreadystatechange = function() {
-	if(xhr.readyState == 4 && xhr.status == 200) {
-		elements = JSON.parse(xhr.responseText);
-		for (i=0;i<elements.vehicles.length;i++) {
-			console.log(elements.vehicles[i].username);
-			console.log(elements.vehicles[i].lat);
-			console.log(elements.vehicles[i].lng);
-		}
-	}
-};
-xhr.send(params);
