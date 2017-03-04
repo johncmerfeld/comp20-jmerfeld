@@ -42,8 +42,8 @@ function renderMap()
 	myMarker = new google.maps.Marker({
 		position: me,
 		map: map,
-		title: myUsername
-		//TODO: icon: JohnCMerfeldHeadshotSmall.jpg
+		title: myUsername,
+		TODO: icon: JohnCMerfeldHeadshotSmall.jpg
 	});
 	//myMarker.setMap(map);
 
@@ -76,7 +76,8 @@ function renderMap()
 				marker = new google.maps.Marker({
 					position: latLng,
 					map: map,
-					title: data.username
+					title: data.username,
+					icon: 'black_car.png'
 				});
 			}
 		}
