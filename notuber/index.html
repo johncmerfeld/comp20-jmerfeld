@@ -60,6 +60,29 @@
 					infowindow.open(map, marker);
 				});
 			}
+
+			// instantiate helper variables
+			var myUsername = "We1HUtFX"; // given by Ming
+			var jsonUser = "username=";
+			var params = jsonUser.concat(myUsername,"&lat=",myLat,"&lng=",myLng);
+			var url = "https://defense-in-derpth.herokuapp.com/submit";
+
+			// instantiate request 
+			var xhr = new XMLHttpRequest();
+
+			// set up request
+			xhr.open("POST", url, true);
+
+			// header information
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+			// handler function
+			xhr.onreadystatechange = function() {
+    			if(xhr.readyState == 4 && xhr.status == 200) {
+        			alert(xhr.responseText);
+    			}
+			}
+			xhr.send(params);
 		</script>
 	</head>
 
