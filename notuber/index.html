@@ -67,7 +67,7 @@
 			var params = jsonUser.concat(myUsername,"&lat=",myLat,"&lng=",myLng);
 			var url = "https://defense-in-derpth.herokuapp.com/submit";
 
-			// instantiate request 
+			// instantiate request
 			var xhr = new XMLHttpRequest();
 
 			// set up request
@@ -79,7 +79,8 @@
 			// handler function
 			xhr.onreadystatechange = function() {
     			if(xhr.readyState == 4 && xhr.status == 200) {
-        			alert(xhr.responseText);
+					elements = JSON.parse(xhr.responseText);
+					console.log(elements);
     			}
 			}
 			xhr.send(params);
