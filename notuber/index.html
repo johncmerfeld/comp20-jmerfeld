@@ -3,30 +3,67 @@
 <html>
 
 	<head>
-		<title>John C. Merfeld's Homepage </title>
-		<link rel="stylesheet" type="text/css" href="personalstyle.css">
+		<title>Geolocation Map Example</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<link rel="stylesheet" href="map_style.css" />
+
+		<script>
+			var myLat = 0;
+			var myLng = 0;
+			var request = new XMLHttpRequest();
+			var me = new google.maps.LatLng(myLat, myLng);
+			var myOptions = {
+						zoom: 13, // The larger the zoom number, the bigger the zoom
+						center: me,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+			var map;
+			var marker;
+			var infowindow = new google.maps.InfoWindow();
+
+			function init()
+			{
+				map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+				getMyLocation();
+			}
+
+			function getMyLocation() {
+				if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+					navigator.geolocation.getCurrentPosition(function(position) {
+						myLat = position.coords.latitude;
+						myLng = position.coords.longitude;
+						renderMap();
+					});
+				}
+				else {
+					alert("Geolocation is not supported by your web browser.  What a shame!");
+				}
+			}
+			function renderMap()
+			{
+				me = new google.maps.LatLng(myLat, myLng);
+
+				// Update map and go there...
+				map.panTo(me);
+
+				// Create a marker
+				marker = new google.maps.Marker({
+					position: me,
+					title: "Here I Am!"
+				});
+				marker.setMap(map);
+
+				// Open info window on click of marker
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.setContent(marker.title);
+					infowindow.open(map, marker);
+				});
+			}
+		</script>
 	</head>
 
-	<body>
-
-		<header>
-			<h1> Welcome to the John C.
-				Merfeld online experience </h1>
-		</header>
-
-		<p> I'll be the first to admit there's not much here yet. Maybe you could check out the
-		<A href="bio.html">bio page</A>.
-		More of a business type? Here's my <A href="resume.html">resume page</A>.
-		Additions are forthcoming! </p>
-
-		<p> Oh, here's a picture of me! Photo credit to Isha Patnaik.</p>
-
-		<img src="headshot.jpg" alt="John's head shot" >
-
-		<p> <span class="signoff">Anyway, keep checking back in for updates. Have a good rest of your
-			time surfing the web. </span> </p>
-
+	<body onload="init()">
+		<div id="map_canvas"></div>
 	</body>
-
-
 </html>
