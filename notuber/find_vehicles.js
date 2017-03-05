@@ -12,6 +12,30 @@ var marker;
 var myInfowindow = new google.maps.InfoWindow();
 var infowindow = new google.maps.InfoWindow();
 
+function haversineDistance(lat1,lng1,lat2,lng2, isMiles) {
+  function toRad(x) {
+    return x * Math.PI / 180;
+  }
+
+  var R = 6371; // km
+
+  var x1 = lat2 - lat1;
+  var dLat = toRad(x1);
+  var x2 = lng2 - lng1;
+  var dLon = toRad(x2)
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+
+  if(isMiles) d /= 1.60934;
+
+	// round to nearest .01 mi
+  return d.toFixed(2);
+}
+
+
 function init()
 {
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
@@ -76,11 +100,13 @@ function renderMap()
 
 				latLng = new google.maps.LatLng(data.lat, data.lng);
 
+				distanceToMe = haversineDistance(data.lat,data.lng,myLat,myLng,true);
+
 				marker = new google.maps.Marker({
 					position: latLng,
 					map: map,
 					title: data.username,
-					content: data.lat + "," + data.lng,
+					content: data.username + ": " + distanceToMe +" miles away",
 					icon: 'black_car.png'
 				});
 
@@ -101,11 +127,4 @@ function renderMap()
 		infowindow.setContent(myMarker.title);
 		infowindow.open(map, myMarker);
 	});
-	//
-	/* Open info window on click of marker
-	google.maps.event.addListener(myMarker, 'click', function() {
-		myInfowindow.setContent(myMarker.title);
-		myInfowindow.open(map, myMarker);
-	}); */
-
 }
