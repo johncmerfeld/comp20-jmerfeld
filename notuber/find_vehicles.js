@@ -9,6 +9,7 @@ var myOptions = {
 		};
 var map;
 var marker;
+var myInfowindow = new google.maps.InfoWindow();
 var infowindow = new google.maps.InfoWindow();
 
 function init()
@@ -43,9 +44,9 @@ function renderMap()
 		position: me,
 		map: map,
 		title: myUsername,
-		TODO: icon: JohnCMerfeldHeadshotSmall.jpg
+		icon: 'JohnCMerfeldHeadshotSmall.png'
 	});
-	//myMarker.setMap(map);
+	myMarker.setMap(map);
 
 	// instantiate helper variables
 	var jsonUser = "username=";
@@ -67,9 +68,9 @@ function renderMap()
 			elements = JSON.parse(xhr.responseText);
 			for (var i=0;i<elements.vehicles.length;i++) {
 				data = elements.vehicles[i];
-				console.log(data.username);
-				console.log(data.lat);
-				console.log(data.lng);
+				//console.log(data.username);
+			//	console.log(data.lat);
+			//	console.log(data.lng);
 
 				latLng = new google.maps.LatLng(data.lat, data.lng);
 
@@ -77,6 +78,7 @@ function renderMap()
 					position: latLng,
 					map: map,
 					title: data.username,
+					content: data.lat + "," + data.lng,
 					icon: 'black_car.png'
 				});
 			}
@@ -84,12 +86,21 @@ function renderMap()
 	};
 	xhr.send(params);
 
-	infowindow.setContent(myMarker.title);
-	infowindow.open(map, myMarker);
+	map.panTo(me);
 
+	myInfowindow.setContent(myMarker.title);
+	myInfowindow.open(map, myMarker);
+	//Open info window on click of marker
+	google.maps.event.addListener(marker, 'click', function() {
+		console.log("Click!");
+		infowindow.setContent(this.content);
+		infowindow.open(map, this);
+	});
+	//
 	/* Open info window on click of marker
 	google.maps.event.addListener(myMarker, 'click', function() {
-		infowindow.setContent(marker.title);
-		infowindow.open(map, marker);
+		myInfowindow.setContent(myMarker.title);
+		myInfowindow.open(map, myMarker);
 	}); */
+
 }
