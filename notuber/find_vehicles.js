@@ -19,7 +19,7 @@ function init()
 }
 
 function getMyLocation() {
-	if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+	if (navigator.geolocation) { // geolocation is supported on your browser
 		navigator.geolocation.getCurrentPosition(function(position) {
 			myLat = position.coords.latitude;
 			myLng = position.coords.longitude;
@@ -27,7 +27,7 @@ function getMyLocation() {
 		});
 	}
 	else {
-		alert("Geolocation is not supported by your web browser.  What a shame!");
+		alert("Geolocation is not supported by your web browser.");
 	}
 }
 function renderMap()
@@ -66,6 +66,8 @@ function renderMap()
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			elements = JSON.parse(xhr.responseText);
+			// create vehicle markers
+			// TODO add passanger case and support for empty
 			for (var i=0;i<elements.vehicles.length;i++) {
 				data = elements.vehicles[i];
 				//console.log(data.username);
@@ -84,7 +86,6 @@ function renderMap()
 
 				//Open info window on click of marker
 				google.maps.event.addListener(marker, 'click', function() {
-					console.log("Click!");
 					infowindow.setContent(this.content);
 					infowindow.open(map, this);
 				});
@@ -96,9 +97,10 @@ function renderMap()
 
 	map.panTo(me);
 
-	myInfowindow.setContent(myMarker.title);
-	myInfowindow.open(map, myMarker);
-
+	google.maps.event.addListener(myMarker, 'click', function() {
+		infowindow.setContent(myMarker.title);
+		infowindow.open(map, myMarker);
+	});
 	//
 	/* Open info window on click of marker
 	google.maps.event.addListener(myMarker, 'click', function() {
