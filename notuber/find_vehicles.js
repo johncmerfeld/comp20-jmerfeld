@@ -81,21 +81,24 @@ function renderMap()
 					content: data.lat + "," + data.lng,
 					icon: 'black_car.png'
 				});
-			}
-		}
-	};
+
+				//Open info window on click of marker
+				google.maps.event.addListener(marker, 'click', function() {
+					console.log("Click!");
+					infowindow.setContent(this.content);
+					infowindow.open(map, this);
+				});
+
+			} // end for loop
+		} // end if successful
+	}; // end onreadystatechange
 	xhr.send(params);
 
 	map.panTo(me);
 
 	myInfowindow.setContent(myMarker.title);
 	myInfowindow.open(map, myMarker);
-	//Open info window on click of marker
-	google.maps.event.addListener(marker, 'click', function() {
-		console.log("Click!");
-		infowindow.setContent(this.content);
-		infowindow.open(map, this);
-	});
+
 	//
 	/* Open info window on click of marker
 	google.maps.event.addListener(myMarker, 'click', function() {
