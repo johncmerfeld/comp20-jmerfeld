@@ -1,10 +1,5 @@
 Assignment 2.
 
-NOTE: find_vehicles.js is the script used by the HTML page. Its name is not entirely accurate. It has support for finding both vehicles and passengers. This will likely be changed.
-
-REMAINING TO DO:
-	- Add support for finding passengers
-
 3/3 14:15 – Downloaded Ming's example code for the Google Maps API HTML and CSS to get the feel for it
 
 3/4 15:00 – Consulted Stack Overflow to understand HTTP POST syntax https://stackoverflow.com/questions/9713058/send-post-data-using-xmlhttprequest
