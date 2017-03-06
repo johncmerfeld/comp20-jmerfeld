@@ -97,9 +97,6 @@ function renderMap(){
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			elements = JSON.parse(xhr.responseText);
-			// create vehicle markers
-			console.log(elements);
-
 			// check for passengers
 			if (elements.passengers != null) {
 				for (var i=0;i<elements.passengers.length;i++) {
@@ -111,7 +108,7 @@ function renderMap(){
 						position: latLng,
 						map: map,
 						title: data.username,
-						content: data.username + ": " + distanceToMe +" miles away",
+						content: '<div class="iw-container">'+data.username + ": " + distanceToMe +" miles away"+'</div>',
 						icon: 'creepy-smile.png'
 					});
 
@@ -121,8 +118,8 @@ function renderMap(){
 						infowindow.open(map, this);
 					});
 
-				} // end for loop
-			}
+				} // end for each passenger
+			} // end if passengers
 
 			// check for vehicles
 			if (elements.vehicles != null) {
@@ -135,7 +132,7 @@ function renderMap(){
 						position: latLng,
 						map: map,
 						title: data.username,
-						content: data.username + ": " + distanceToMe +" miles away",
+						content: '<div class="iw-container">'+data.username + ": " + distanceToMe +" miles away"+'</div>',
 						icon: 'black_car.png'
 					});
 
@@ -145,8 +142,9 @@ function renderMap(){
 						infowindow.open(map, this);
 					});
 
-				} // end for loop
-			} // end if
+				} // end for each vehicle
+			} // end if vehicles
+
 		} // end if successful
 	}; // end onreadystatechange
 	xhr.send(params);
