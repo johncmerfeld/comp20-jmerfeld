@@ -1,5 +1,7 @@
 Assignment 2.
 
+NOTE: find_vehicles.js is the script used by the HTML page. Its name is not entirely accurate. It has support for finding both vehicles and passengers. This will likely be changed.
+
 REMAINING TO DO:
 	- Add support for finding passengers
 
@@ -11,4 +13,6 @@ REMAINING TO DO:
 
 3/4 14:45 – Used Google's code to adjust marker icons
 
-3/4 18:00 – used Haversine formula JS implementation from stack overflow as a jumping off point. http://stackoverflow.com/questions/14560999/using-the-haversine-formula-in-javascript
+3/5 17:00 – Got advice from Ming about how to make all other markers responsive to clicks
+
+3/5 18:00 – Used Haversine formula JS implementation from stack overflow as a jumping off point. http://stackoverflow.com/questions/14560999/using-the-haversine-formula-in-javascript
