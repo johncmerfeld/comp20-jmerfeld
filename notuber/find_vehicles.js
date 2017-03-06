@@ -17,13 +17,13 @@ var myOptions = {
 			center: me,
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
+var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/'; // possible use later
 var map;
-var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/'; // future
 var marker;
 var myInfowindow = new google.maps.InfoWindow();
 var infowindow = new google.maps.InfoWindow();
 
-// calculate distances between user and cars/passengers
+// calculate distance between user and cars/passengers
 function haversineDistance(lat1,lng1,lat2,lng2, isMiles) {
   	function toRad(x) {
     	return x * Math.PI / 180;
@@ -47,13 +47,13 @@ function haversineDistance(lat1,lng1,lat2,lng2, isMiles) {
   	return d.toFixed(2);
 }
 
-//initialization called by html
+//initialization for the html
 function init(){
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	getMyLocation();
 }
 
-// use js geolocation object to get location and render map
+// use geolocation object and render map
 function getMyLocation() {
 	if (navigator.geolocation) { // geolocation is supported on your browser
 		navigator.geolocation.getCurrentPosition(function(position) {
@@ -67,11 +67,11 @@ function getMyLocation() {
 	}
 }
 
-// connect to datastore, add markers and windows to map
+// find cars/passengers and add them to map
 function renderMap(){
 	me = new google.maps.LatLng(myLat, myLng);
 
-	// Update map and go there...
+	// Update map and go there
 	map.panTo(me);
 
 	myMarker = new google.maps.Marker({
@@ -80,11 +80,6 @@ function renderMap(){
 		title: myUsername,
 		icon: 'JohnCMerfeldHeadshotSmall.png'
 	});
-	// add my info window
-	google.maps.event.addListener(myMarker, 'click', function() {
-		infowindow.setContent(myMarker.title);
-		infowindow.open(map, myMarker);
-
 	myMarker.setMap(map);
 
 	// instantiate helper variables
@@ -94,45 +89,71 @@ function renderMap(){
 
 	// instantiate request
 	var xhr = new XMLHttpRequest();
-
 	// set up request
 	xhr.open("POST", url, true);
-
 	// header information
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
 	// handler function
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4 && xhr.status == 200) {
 			elements = JSON.parse(xhr.responseText);
 			// create vehicle markers
-			// TODO add passanger case and support for empty
-			for (var i=0;i<elements.vehicles.length;i++) {
+			console.log(elements);
 
-				// calculate distance
-				data = elements.vehicles[i];
-				latLng = new google.maps.LatLng(data.lat, data.lng);
-				distanceToMe = haversineDistance(data.lat,data.lng,myLat,myLng,true);
+			// check for passengers
+			if (elements.passengers != null) {
+				for (var i=0;i<elements.passengers.length;i++) {
+					data = elements.passengers[i];
+					latLng = new google.maps.LatLng(data.lat, data.lng);
+					distanceToMe = haversineDistance(data.lat,data.lng,myLat,myLng,true);
 
-				marker = new google.maps.Marker({
-					position: latLng,
-					map: map,
-					title: data.username,
-					content: data.username + ": " + distanceToMe +" miles away",
-					icon: 'black_car.png'
-				});
+					marker = new google.maps.Marker({
+						position: latLng,
+						map: map,
+						title: data.username,
+						content: data.username + ": " + distanceToMe +" miles away",
+						icon: 'creepy-smile.png'
+					});
 
-				//Open info window on click of marker
-				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(this.content);
-					infowindow.open(map, this);
-				});
+					//Open info window on click of marker
+					google.maps.event.addListener(marker, 'click', function() {
+						infowindow.setContent(this.content);
+						infowindow.open(map, this);
+					});
 
-			} // end for loop
+				} // end for loop
+			}
+
+			// check for vehicles
+			if (elements.vehicles != null) {
+				for (var i=0;i<elements.vehicles.length;i++) {
+					data = elements.vehicles[i];
+					latLng = new google.maps.LatLng(data.lat, data.lng);
+					distanceToMe = haversineDistance(data.lat,data.lng,myLat,myLng,true);
+
+					marker = new google.maps.Marker({
+						position: latLng,
+						map: map,
+						title: data.username,
+						content: data.username + ": " + distanceToMe +" miles away",
+						icon: 'black_car.png'
+					});
+
+					//Open info window on click of marker
+					google.maps.event.addListener(marker, 'click', function() {
+						infowindow.setContent(this.content);
+						infowindow.open(map, this);
+					});
+
+				} // end for loop
+			} // end if
 		} // end if successful
 	}; // end onreadystatechange
 	xhr.send(params);
 
-	map.panTo(me); // TODO see if this is needed
+	// click support for user's marker
+	google.maps.event.addListener(myMarker, 'click', function() {
+		infowindow.setContent(myMarker.title);
+		infowindow.open(map, myMarker);
 	});
 }
