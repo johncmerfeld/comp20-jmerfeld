@@ -2,15 +2,27 @@
 
 <html>
 <head>
-  <title>Messages</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script>
-    // Complete this section...
-  </script>
+  	<title>Messages</title>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  	<script>
+
+	var url = "https://messagehub.herokuapp.com/messages.json";
+	var newData = "";
+	
+    $(document).ready(function(){
+		$.get( url, function( data ) {
+  			$(data).each(function(i) {
+				newData += "<p>" + data[i].content + " by " + data[i].username + "</p>";
+			});
+			$("#messages").html(newData);
+		});
+	});
+
+  	</script>
 </head>
 
 <body>
-  <h1>Messages</h1>
-  <div id="messages">Loading...</div>
+  	<h1>Messages</h1>
+  	<div id="messages">Loading...</div>
 </body>
 </html>
