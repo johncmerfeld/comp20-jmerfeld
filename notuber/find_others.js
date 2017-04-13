@@ -1,6 +1,6 @@
 /* 	find_vehicles.js
 	created by: 	John C. Merfeld
-	last modifeid: 	3 / 6 / 2017
+	last modifeid: 	3 / 27 / 2017
 
 		Loads a google map, gets user's location, checks the server
 	for nearby passengers and vehicles and displays how far away they
@@ -85,7 +85,7 @@ function renderMap(){
 	// instantiate helper variables
 	var jsonUser = "username=";
 	var params = jsonUser.concat(myUsername,"&lat=",myLat,"&lng=",myLng);
-	var url = "https://defense-in-derpth.herokuapp.com/submit";
+	var url = "https://mysterious-depths-67562.herokuapp.com/submit";
 
 	// instantiate request
 	var xhr = new XMLHttpRequest();
