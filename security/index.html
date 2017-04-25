@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Security Report</title>
+</head>
+
+<body>
+
+<h1>Security report: Ming Chow's black car service </h1>
+
+<h2>Written by John C. Merfeld </h2>
+
+<h3> Introduction: </h3>
+
+<p> NOTE: My original partner's code was throwing internal server errors when I tried to make requests to it, which is why I am using Ming Chow's app instead.</p> <p>The product is a prototype for a ride-hailing app. Passengers can make requests to the server at which point their location is added to a database where vehicles can find them. I was hired to perform a security evaluation of the app and document ways in which malicious users could cause it to crash or reveal private information. </p>
+
+<h3> Methodology: </h3>
+
+<p> I used a combination of black box and white box testing. Much of my testing was conduted from the command line using the curl tool to send malicious requests. I also explored vulnerabilities in the source code itself. </p>
+
+<h3> Abstract: </h3>
+
+<p> Broadly speaking, the server does not do enough to validate user input before passing it through the system. It is possible to feed the app segements of malicious code that cause it to malfunction or display private information, either via how the webpage is displayed or by directly manipulating the database containing the information. Also, by knowing which database the owner is using, I determined a way to overwhelm and crash it with huge amounts of data. </p>
+
+<h3> Issues: </h3>
+
+<h4> Issue 1 – Cross site scripting </h4>
+
+<ul> <li> Location: POST route / home page </li> <li> Severity: high (can potentially disrupt the entire user experience of the site and/or redirect the user to a malicious site)</li> <li> Description and proof: I found this vulnerability by posting some JavaScript to the app that caused the following alert to appear:</li> <li> <img src="xss.png" alt="XSS attack" height=50% width=50%> </li> <li> Resolution: Converting angle brackets to some other encoded character would prevent script tags from being executed by the HTML on the home page </li> </ul>
+
+<h4> Issue 2 – NoSQL injection </h4>
+
+<ul> <li> Location: GET route / vehicle.json page </li> <li> Severity: medium (displays private information, but not much about the user besides location is stored in the database, and the GET method itself is written so as to return at most one entry, even if many are requested)</li> <li> I added several vehicles to the database, then requested information in the form of a MongoDB command that would have returned all vehicles, even if I didn't know their username. This had limited effectiveness, because the GET method uses db.findOne() instead of db.find(), so it doesn't actually return every single driver – just the most recent one. This is demonstrated here (see the URL):</li> <li> <img src="nosql.png" alt="NoSQL injection" height=50% width=50%> </li> <li> Resolution: Sanitize GET parameters. Specifically, stripping the MongoDB special characters from username inputs would prevent malicious users from manipulating the database. </li> </ul>
+
+<h4> Issue 3 – Overloading the Mongo database </h4>
+
+<ul> <li> Location: POST route </li> <li> Severity: medium (can potentially crash the database, but user information would not be compromised)</li> <li> Description and proof: Admittedly, I was not able to actually test this vulnerability out (per Ming's reqeust), but by examining the source code, I knew the site used an mLab sandbox Mongo database. Then, by consulting the mLab site, I discovered the maximum amount of data that could be stored in the database. If a huge series of POST requests were made, the database could be filled and all new user functionality of the site would cease. Proof of concept illustrated here: </li> <li> <img src="mongodb.png" alt="MongoDB attack"></li> <li> Resolution: Checking usernames to ensure they are not of problematic length would prevent a single user from bringing down the database. However, there is little that could be done to prevent a full-fledge DoS attack on the site (as is true of any limited-size database) </li> </ul>
+
+<h3> Conclusion: </h3>
+
+<p> Generally, the problems discovered here can mitigated by better data sanitation. A quick run through the code that properly validates the input would eliminate the first two problems I found above. Of course, the website is limited by the (free) tools it is built on, but the vulnerabilites to XSS and injection can be fixed fairly simply in this case.</p>
+
+<h3> References: </h3>
+
+<ul> <li> <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">XSS information</a> </li>
+
+<li><a href="https://gist.github.com/mchow01/49f8979829f1c488d922"> NoSQL injection exmaple from Ming </a> </li>
+
+<li> <a href="https://elements.heroku.com/addons/mongolab">mLab MongoDB information</a></li>
+</ul>
+
+</body>
+</html>
